@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
+data/*.csv
+.DS_Store
+data/raw/
+INTERVIEW_PREP.md

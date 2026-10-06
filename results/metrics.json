@@ -1,0 +1,68 @@
+{
+  "ops": {
+    "kpis": {
+      "flights": 366892,
+      "on_time_rate": 0.7549287730512813,
+      "cancel_rate": 0.00467712569366462,
+      "avg_delay_min_when_late": 56.88701653744454,
+      "airports": 107,
+      "routes": 1802
+    },
+    "cause_share_pct": {
+      "LateAircraftDelay": 53.7,
+      "CarrierDelay": 26.8,
+      "NASDelay": 16.5,
+      "WeatherDelay": 2.9,
+      "SecurityDelay": 0.2
+    },
+    "worst_airports": {
+      "DEN": 31.0,
+      "BWI": 30.7,
+      "DAL": 29.9,
+      "MDW": 28.4,
+      "MCO": 27.7,
+      "SEA": 27.5,
+      "FLL": 27.4,
+      "LAX": 27.4,
+      "ATL": 27.1,
+      "AUS": 27.1
+    },
+    "peak_delay_hour": 21,
+    "morning_vs_evening": {
+      "before_9am": 0.07491669433434317,
+      "after_5pm": 0.3940835858733966
+    }
+  },
+  "model": {
+    "train_months": [
+      "2024-04",
+      "2024-05"
+    ],
+    "test_month": "2024-06",
+    "train_rows": 241140,
+    "test_rows": 123048,
+    "test_delay_rate": 0.2579968792666277,
+    "models": [
+      {
+        "model": "Logistic Regression",
+        "roc_auc": 0.7172242125665927,
+        "pr_auc": 0.4236809575928353,
+        "capture_top20_pct": 35.25483525483526
+      },
+      {
+        "model": "Gradient Boosting",
+        "roc_auc": 0.7049482474582691,
+        "pr_auc": 0.4055455377228844,
+        "capture_top20_pct": 33.41208341208341
+      }
+    ],
+    "best_model": "Logistic Regression",
+    "top_features": {
+      "dep_hour": 0.1092,
+      "Origin": 0.0435,
+      "origin_hist_delay": 0.0162,
+      "Dest": 0.0151,
+      "day_of_week": 0.0138
+    }
+  }
+}
