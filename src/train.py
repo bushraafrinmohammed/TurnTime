@@ -104,6 +104,43 @@ def ops_analytics(df: pd.DataFrame) -> dict:
 
     by_hour.rename(columns={"mean": "delay_rate", "size": "flights"}).to_csv(RESULTS / "delay_by_hour.csv")
     ap.sort_values("flights", ascending=False).to_csv(RESULTS / "airport_stats.csv")
+
+    # Extra aggregates for the interactive dashboard (small CSVs; raw data stays local)
+    dash = RESULTS / "dashboard"
+    dash.mkdir(exist_ok=True)
+    (df.groupby("Origin")
+       .agg(flights=("Cancelled", "size"), cancel_rate=("Cancelled", "mean"))
+       .join(flown.groupby("Origin").agg(delay_rate=("ArrDel15", "mean"),
+                                          avg_delay_min=("ArrDelay", "mean")))
+       .reset_index().to_csv(dash / "airports.csv", index=False))
+    (flown.groupby(["Origin", "Dest"])
+       .agg(flights=("ArrDel15", "size"), delay_rate=("ArrDel15", "mean"),
+            avg_delay_min=("ArrDelay", "mean"), distance=("distance", "median"))
+       .query("flights >= 30").reset_index().to_csv(dash / "routes.csv", index=False))
+    (flown.groupby(["day_of_week", "dep_hour"])["ArrDel15"].agg(delay_rate="mean", flights="size")
+       .reset_index().to_csv(dash / "heat_dow_hour.csv", index=False))
+    (df.groupby("FlightDate")
+       .agg(flights=("Cancelled", "size"), cancel_rate=("Cancelled", "mean"))
+       .join(flown.groupby("FlightDate").agg(delay_rate=("ArrDel15", "mean")))
+       .reset_index().to_csv(dash / "daily.csv", index=False))
+    (flown.assign(month=flown["FlightDate"].dt.strftime("%Y-%m"))
+       .groupby("month")[CAUSES].sum().reset_index().to_csv(dash / "cause_by_month.csv", index=False))
+
+    # Filterable cube: date x origin x departure hour (lets every dashboard chart respond to filters)
+    c = df.assign(
+        is_flown=((df["Cancelled"] == 0) & (df["Diverted"] == 0)).astype(int),
+        late=df["ArrDel15"].fillna(0).where((df["Cancelled"] == 0) & (df["Diverted"] == 0), 0),
+        late_delay_min=df["ArrDelay"].where(df["ArrDel15"] == 1, 0).fillna(0),
+        **{k: df[k].fillna(0) for k in CAUSES})
+    (c.groupby([c["FlightDate"].dt.strftime("%Y-%m-%d").rename("date"), "Origin", "dep_hour"])
+      .agg(flights=("Cancelled", "size"), cancelled=("Cancelled", "sum"), flown=("is_flown", "sum"),
+           late=("late", "sum"), late_delay_min=("late_delay_min", "sum"), **{k: (k, "sum") for k in CAUSES})
+      .round(1).reset_index().to_csv(dash / "cube.csv.gz", index=False))
+    f2 = c[c["is_flown"] == 1]
+    (f2.groupby([f2["FlightDate"].dt.strftime("%Y-%m").rename("month"), "Origin", "Dest"])
+       .agg(flights=("late", "size"), late=("late", "sum"), late_delay_min=("late_delay_min", "sum"),
+            distance=("distance", "median"))
+       .reset_index().to_csv(dash / "routes_month.csv.gz", index=False))
     return {"kpis": kpis, "cause_share_pct": cause_share.round(1).to_dict(),
             "worst_airports": (worst["rate"] * 100).round(1).to_dict(),
             "peak_delay_hour": int(by_hour["mean"].idxmax()),
