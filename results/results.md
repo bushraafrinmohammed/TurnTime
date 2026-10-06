@@ -2,34 +2,34 @@
 
 ## Operations KPIs
 
-- Flights analyzed: **359,393** across **108** airports, **1816** routes
-- On-time arrival rate: **71.9%** | Cancellation rate: **0.43%**
-- Average arrival delay when late: **52 min**
-- Delay rate before 9 AM: **8.2%** vs after 5 PM: **40.1%**
+- Flights analyzed: **811,470** across **108** airports, **1935** routes
+- On-time arrival rate: **74.7%** | Cancellation rate: **1.06%**
+- Average arrival delay when late: **53 min**
+- Delay rate before 9 AM: **8.0%** vs after 5 PM: **36.6%**
 
 ## Delay minutes by cause (%)
 
-- LateAircraftDelay: **52.2%**
-- CarrierDelay: **29.1%**
-- NASDelay: **16.1%**
-- WeatherDelay: **2.3%**
-- SecurityDelay: **0.2%**
+- LateAircraftDelay: **50.8%**
+- CarrierDelay: **29.4%**
+- NASDelay: **17.1%**
+- WeatherDelay: **2.4%**
+- SecurityDelay: **0.3%**
 
 ## Delay prediction (pre-departure features only)
 
-Train: 2026-04, 2026-05 (237,182 flights) | Test: 2026-06 (119,743 flights, 34.0% delayed)
+Train: 2026-01, 2026-02, 2026-03, 2026-04, 2026-05, 2026-06 (500,000 flights) | Test: 2026-07 (122,864 flights, 30.8% delayed)
 
 | model               |   roc_auc |   pr_auc |   capture_top20_pct |
 |:--------------------|----------:|---------:|--------------------:|
-| Logistic Regression |     0.740 |    0.560 |              34.535 |
-| Gradient Boosting   |     0.743 |    0.570 |              35.220 |
+| Logistic Regression |     0.744 |    0.511 |              34.993 |
+| Gradient Boosting   |     0.747 |    0.518 |              35.635 |
 
-**Gradient Boosting**: flagging the riskiest 20% of flights captures **35%** of all delayed flights (1.8x better than random).
+**Gradient Boosting**: flagging the riskiest 20% of flights captures **36%** of all delayed flights (1.8x better than random).
 
 ## Top predictors (permutation importance)
 
 1. `dep_hour`
 2. `arr_hour`
 3. `route_hist_delay`
-4. `day_of_week`
-5. `Dest`
+4. `Dest`
+5. `hour_hist_delay`

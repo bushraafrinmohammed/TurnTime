@@ -1,68 +1,72 @@
 {
   "ops": {
     "kpis": {
-      "flights": 359393,
-      "on_time_rate": 0.7194872872452196,
-      "cancel_rate": 0.004251613136594202,
-      "avg_delay_min_when_late": 51.79617866203232,
+      "flights": 811470,
+      "on_time_rate": 0.7472186102981679,
+      "cancel_rate": 0.010605444440336674,
+      "avg_delay_min_when_late": 52.78088094320417,
       "airports": 108,
-      "routes": 1816
+      "routes": 1935
     },
     "cause_share_pct": {
-      "LateAircraftDelay": 52.2,
-      "CarrierDelay": 29.1,
-      "NASDelay": 16.1,
-      "WeatherDelay": 2.3,
-      "SecurityDelay": 0.2
+      "LateAircraftDelay": 50.8,
+      "CarrierDelay": 29.4,
+      "NASDelay": 17.1,
+      "WeatherDelay": 2.4,
+      "SecurityDelay": 0.3
     },
     "worst_airports": {
-      "SFO": 56.3,
-      "DAL": 36.4,
-      "DEN": 35.8,
-      "LAX": 34.3,
-      "LGA": 33.9,
-      "SEA": 33.8,
-      "BNA": 33.7,
-      "AUS": 33.1,
-      "SAN": 32.9,
-      "PHX": 31.8
+      "SFO": 45.0,
+      "FLL": 31.2,
+      "DEN": 30.9,
+      "SEA": 30.8,
+      "DAL": 30.8,
+      "LAX": 30.1,
+      "AUS": 29.6,
+      "BNA": 29.5,
+      "SAN": 29.1,
+      "LGA": 28.8
     },
-    "peak_delay_hour": 19,
+    "peak_delay_hour": 21,
     "morning_vs_evening": {
-      "before_9am": 0.0820265483421363,
-      "after_5pm": 0.4013057364722316
+      "before_9am": 0.0800594028024239,
+      "after_5pm": 0.36649510219154574
     }
   },
   "model": {
     "train_months": [
+      "2026-01",
+      "2026-02",
+      "2026-03",
       "2026-04",
-      "2026-05"
+      "2026-05",
+      "2026-06"
     ],
-    "test_month": "2026-06",
-    "train_rows": 237182,
-    "test_rows": 119743,
-    "test_delay_rate": 0.3402119539346768,
+    "test_month": "2026-07",
+    "train_rows": 500000,
+    "test_rows": 122864,
+    "test_delay_rate": 0.3081618700351608,
     "models": [
       {
         "model": "Logistic Regression",
-        "roc_auc": 0.7398674633071721,
-        "pr_auc": 0.5599935219723786,
-        "capture_top20_pct": 34.535323285384656
+        "roc_auc": 0.743505773527021,
+        "pr_auc": 0.5113276554372563,
+        "capture_top20_pct": 34.99286883946965
       },
       {
         "model": "Gradient Boosting",
-        "roc_auc": 0.7425725212870449,
-        "pr_auc": 0.5697541864008198,
-        "capture_top20_pct": 35.22018753988905
+        "roc_auc": 0.7466758781009072,
+        "pr_auc": 0.5177706777494413,
+        "capture_top20_pct": 35.63467328720088
       }
     ],
     "best_model": "Gradient Boosting",
     "top_features": {
-      "dep_hour": 0.1264,
-      "arr_hour": 0.0308,
-      "route_hist_delay": 0.0177,
-      "day_of_week": 0.0139,
-      "Dest": 0.006
+      "dep_hour": 0.1417,
+      "arr_hour": 0.0314,
+      "route_hist_delay": 0.0159,
+      "Dest": 0.0122,
+      "hour_hist_delay": 0.0091
     }
   }
 }

@@ -93,7 +93,7 @@ with st.sidebar:
     st.markdown("### 🎛️ Filters")
     st.caption("Every KPI and chart updates with these.")
     d0, d1 = pd.Timestamp(dates[0]).date(), pd.Timestamp(dates[-1]).date()
-    dr = st.slider("Date range", d0, d1, (d0, d1), format="MMM D")
+    dr = st.slider("Date range", d0, d1, (d0, d1), format="MMM D, YYYY")
     all_ap = cube.groupby("Origin")["flights"].sum().sort_values(ascending=False).index.tolist()
     sel_ap = st.multiselect("Airports (departing)", all_ap, placeholder="All airports",
                             help="Leave empty for all airports")

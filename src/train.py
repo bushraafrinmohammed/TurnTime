@@ -45,6 +45,8 @@ NUM = ["dep_hour", "arr_hour", "day_of_week", "is_weekend", "distance",
        "origin_hour_departures", "route_hist_delay", "origin_hist_delay", "dest_hist_delay",
        "hour_hist_delay"]
 CAT = ["Origin", "Dest"]
+TRAIN_MONTHS = 6          # months of history used to train the delay model
+MAX_TRAIN_ROWS = 500_000  # memory cap for training
 
 
 # ---------------- Data ----------------
@@ -171,7 +173,12 @@ def model_part(df: pd.DataFrame) -> dict:
     d = df[(df["Cancelled"] == 0) & (df["Diverted"] == 0)].dropna(subset=["ArrDel15"]).copy()
     d["ArrDel15"] = d["ArrDel15"].astype(int)
     last = d["ym"].max()
-    train, test = d[d["ym"] < last], d[d["ym"] == last]
+    # Train on the most recent TRAIN_MONTHS months before the test month (keeps memory and runtime
+    # manageable on multi-year data and reflects current operations), capped at MAX_TRAIN_ROWS.
+    train = d[(d["ym"] < last) & (d["ym"] >= last - TRAIN_MONTHS)]
+    test = d[d["ym"] == last]
+    if len(train) > MAX_TRAIN_ROWS:
+        train = train.sample(MAX_TRAIN_ROWS, random_state=SEED)
     prior = train["ArrDel15"].mean()
 
     # Out-of-fold style history for train: compute per train month from OTHER train months

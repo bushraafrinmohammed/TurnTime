@@ -1,6 +1,6 @@
 # Data
 
-Run `python src/download_data.py --year 2024 --months 4 5 6`.
+Run `python src/download_data.py` (last 24 months up to the latest published; use `--start YYYY-MM` to change). Months are cached in `data/raw/`, so re-running resumes.
 It downloads BTS "Reporting Carrier On-Time Performance" monthly files from
 https://transtats.bts.gov/PREZIP/ and keeps Southwest (`Reporting_Airline == "WN"`).
 

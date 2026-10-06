@@ -4,7 +4,7 @@ Analyzes Southwest Airlines on-time performance from U.S. DOT flight records, fi
 
 **Stack:** Python · SQL (DuckDB) · pandas · scikit-learn (HistGradientBoosting, Logistic Regression) · Matplotlib · Streamlit
 
-**🚀 Live dashboard:** [turntime-bushra.streamlit.app](https://turntime-bushra.streamlit.app)
+**Live dashboard:** _add your Streamlit Cloud link here_
 
 ---
 
@@ -17,7 +17,7 @@ Analyzes Southwest Airlines on-time performance from U.S. DOT flight records, fi
 
 ## Data
 
-[BTS Airline On-Time Performance](https://www.transtats.bts.gov/) (U.S. Department of Transportation), Reporting Carrier On-Time Performance, filtered to Southwest (carrier code `WN`). `src/download_data.py` downloads and filters it automatically. Southwest operates roughly 4,000 daily flights, so three months is several hundred thousand flights.
+[BTS Airline On-Time Performance](https://www.transtats.bts.gov/) (U.S. Department of Transportation), Reporting Carrier On-Time Performance, filtered to Southwest (carrier code `WN`). `src/download_data.py` downloads and filters it automatically. Southwest operates roughly 4,000 daily flights, so two years is roughly 2.8 million flights. The dashboard covers the full period; the delay model trains on the 6 most recent months before the test month.
 
 ## Approach
 
@@ -70,7 +70,7 @@ Analyzes Southwest Airlines on-time performance from U.S. DOT flight records, fi
 
 ```bash
 pip install -r requirements.txt
-python src/download_data.py --year 2024 --months 4 5 6
+python src/download_data.py            # last 24 months up to latest published
 python src/run_sql.py
 python src/train.py
 streamlit run app.py
