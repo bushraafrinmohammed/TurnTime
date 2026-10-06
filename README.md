@@ -4,7 +4,7 @@ Analyzes Southwest Airlines on-time performance from U.S. DOT flight records, fi
 
 **Stack:** Python · SQL (DuckDB) · pandas · scikit-learn (HistGradientBoosting, Logistic Regression) · Matplotlib · Streamlit
 
-**Live dashboard:** _add your Streamlit Cloud link here_
+**🚀 Live dashboard:** [turntime-bushra.streamlit.app](https://turntime-bushra.streamlit.app)
 
 ---
 
